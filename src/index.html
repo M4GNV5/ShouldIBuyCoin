@@ -1,0 +1,51 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <center>
+            <h1>Should you buy Ancient Coin?</h1>
+            <form>
+                <select id="region">
+                    <option value="br">br</option>
+                    <option value="eune">eune</option>
+                    <option value="euw">euw</option>
+                    <option value="kr">kr</option>
+                    <option value="lan">lan</option>
+                    <option value="las">las</option>
+                    <option value="na">na</option>
+                    <option value="oce">oce</option>
+                    <option value="ru">ru</option>
+                    <option value="tr">tr</option>
+                </select>
+                <input type="text" id="name" />
+                <button id="doItButton" onclick="doIt();">Get Data</button>
+            </form>
+            <div id="result"></div>
+        </center>
+
+        <script type="text/javascript">
+            function doIt()
+            {
+                var result = document.getElementById("result");
+                var region = document.getElementById("region").value;
+                var name = document.getElementById("name").value;
+                var button = document.getElementById("doItButton");
+
+                if(!region || !name)
+                    return;
+
+                button.disabled = true;
+
+                result.innerHTML = "<p>Loading...</p>";
+                var req = new XMLHttpRequest();
+                req.addEventListener("load", function()
+                {
+                    result.innerHTML = this.responseText;
+                    button.disabled = false;
+                });
+                req.open("GET", "/" + region + "/" + name);
+                req.send();
+            }
+        </script>
+    </body>
+</html>
