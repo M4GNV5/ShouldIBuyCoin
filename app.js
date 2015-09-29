@@ -2,7 +2,7 @@ var express = require("express")
 var app = express();
 var RiotApi = require("./src/riotApi.js");
 
-var riot = new RiotApi("euw", "e5cad4ff-6733-4438-96e4-937e3ad1bcc1");
+var riot = new RiotApi("e5cad4ff-6733-4438-96e4-937e3ad1bcc1");
 var regions = ["br", "eune", "euw", "kr", "lan", "las", "na", "oce", "ru", "tr"];
 
 var frontend = require("fs").readFileSync("./src/index.html");
