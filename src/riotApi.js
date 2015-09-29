@@ -39,17 +39,6 @@ api.prototype.makeRequest = function(url, cb)
 	});
 };
 
-api.prototype.getChampions = function(cb)
-{
-    var url = "https://global.api.pvp.net/api/lol/static-data/" + this.region + "/v1.2/champion?api_key=" + this.key;
-
-    this.makeRequest(url, cb);
-};
-/*api.prototype.getSummonerSpells = function(cb)
-{
-    var url = "https://global.api.pvp.net/api/lol/static-data/" + this.region + "/v1.2/summoner-spell?api_key=" + this.key;
-    this.makeRequest(url, cb);
-};*/
 api.prototype.getGames = function(region, id, cb)
 {
     var url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.2/matchlist/by-summoner/" + id + "?api_key=" + this.key;
@@ -63,12 +52,6 @@ api.prototype.getGame = function(region, id, cb)
 api.prototype.getSummoner = function(region, name, cb)
 {
     var url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + name + "?api_key="  + this.key;
-    this.makeRequest(url, cb);
-};
-api.prototype.getSummonerStats = function(region, id, cb)
-{
-    var season = season || "SEASON2015";
-    var url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.3/stats/by-summoner/" + id + "/summary?season=" + season + "&api_key="  + this.key;
     this.makeRequest(url, cb);
 };
 

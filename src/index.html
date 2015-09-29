@@ -1,11 +1,14 @@
 <html>
     <head>
+        <link rel="stylesheet" href="/static/bootstrap.min.css" />
+        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/static/styles.css" />
     </head>
     <body>
-        <center>
+        <div id="container">
             <h1>Should you buy Ancient Coin?</h1>
-            <form>
-                <select id="region">
+            <div class="form-inline" id="input">
+                <select id="region" class="form-control">
                     <option value="br">br</option>
                     <option value="eune">eune</option>
                     <option value="euw">euw</option>
@@ -17,34 +20,62 @@
                     <option value="ru">ru</option>
                     <option value="tr">tr</option>
                 </select>
-                <input type="text" id="name" />
-                <button id="doItButton" onclick="doIt();">Get Data</button>
-            </form>
+                <input type="text" id="name" class="form-control" placeholder="Summoner Name" />
+                <button id="doItButton" onclick="doIt();" class="btn btn-primary" >Should I?</button>
+            </div>
             <div id="result"></div>
-        </center>
+        </div>
+        <div id="footer">
+            <a href="https://github.com/M4GNV5/ShouldIBuyCoin"><i class="fa fa-github-square fa-3x"></i></a>
+            <a href="#"><i class="fa fa-reddit-square fa-3x"></i></a>
+            <a href="https://twitter.com/M46NV5"><i class="fa fa-twitter-square fa-3x"></i></a>
+        </div>
+
+        <script src="/static/jquery.min.js"></script>
 
         <script type="text/javascript">
+            var animatedOnce = false;
             function doIt()
             {
-                var result = document.getElementById("result");
-                var region = document.getElementById("region").value;
-                var name = document.getElementById("name").value;
-                var button = document.getElementById("doItButton");
+                var region = $("#region").val();
+                var name = $("#name").val();
 
                 if(!region || !name)
                     return;
 
-                button.disabled = true;
+                $("#doItButton").prop("disabled", true);
 
-                result.innerHTML = "<p>Loading...</p>";
-                var req = new XMLHttpRequest();
-                req.addEventListener("load", function()
+                if(animatedOnce)
+                    $("#result").html("<h2>Loading...</h2>");
+
+                var opts = {};
+                opts["min-height"] = 182;
+                opts["min-width"] = 528.328;
+                $("#container").animate(opts, 1500, function()
                 {
-                    result.innerHTML = this.responseText;
-                    button.disabled = false;
+                    animatedOnce = true;
+                    $("#result").html("<h2>Loading...</h2>");
+
+                    $.get("/" + region + "/" + name, function(data)
+                    {
+                        if(data.split("<br />").length == 1) //error
+                        {
+                            $("#result").html(data);
+                            $("#doItButton").prop("disabled", false);
+                            return;
+                        }
+
+                        var opts = {};
+                        opts["min-height"] = 282;
+                        opts["min-width"] = 665;
+
+                        $("#container").animate(opts, 1500, function()
+                        {
+                            $("#result").html(data);
+                            $("#doItButton").prop("disabled", false);
+                        });
+                    });
                 });
-                req.open("GET", "/" + region + "/" + name);
-                req.send();
             }
         </script>
     </body>

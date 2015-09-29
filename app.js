@@ -9,7 +9,7 @@ var frontend = require("fs").readFileSync("./src/index.html");
 
 app.get("/", function(req, res)
 {
-    res.end(frontend);
+    res.end(require("fs").readFileSync("./src/index.html"));
 });
 
 app.use("/static", express.static(__dirname + "/static"));
@@ -20,21 +20,21 @@ app.get("/:region/:summoner", function(req, res)
     var summoner = req.params.summoner || false;
 
     if(regions.indexOf(region) == -1 || !summoner)
-        return res.status(403).end(createError("invalid region"));
+        return res.end(createError("invalid region"));
 
     riot.getSummoner(region, summoner, function(err, result)
     {
         if(err)
-            return res.status(400).end(createError(err));
+            return res.end(createError(err));
 
         var summonerId = result[Object.keys(result)[0]].id;
         if(!summonerId)
-            return res.status(400).end(createError("invalid summoner name"));
+            return res.end(createError("invalid summoner name"));
 
         riot.getGames(region, summonerId, function(err, data)
         {
             if(err)
-                return res.status(400).end(createError(err));
+                return res.end(createError(err));
 
             var result = [];
             var count = 0;
@@ -119,20 +119,20 @@ app.get("/:region/:summoner", function(req, res)
 
                 missedPerMin /= result.length;
                 avDuration /= result.length;
-                var csPerMin = 9 - missedPerMin;
+                var csPerMin = 10 - missedPerMin;
 
                 var message = "";
                 if(shouldBuy > 0)
-                    message += '<h2><font color="green">YES</font></h2>';
+                    message += '<h2 style="color: #5cb85c;">YES</h2>';
                 else if(shouldBuy == 0)
-                    message += '<h2><font color="yellow">MAYBE</font></h2>';
+                    message += '<h2 style="color: #f0ad4e;">MAYBE</h2>';
                 else
-                    message += '<h2><font color="red">NO</font></h2>';
+                    message += '<h2 style="color: #d9534f;">NO</h2>';
 
                 var goldPerMin = missedPerMin * 3;
                 var goldMissed = round(goldPerMin * avDuration);
                 message += "<p>You farm an average of " + round(csPerMin) + " minions per minute"
-                    + "<br />That means you missed an average of " + round(missedPerMin) + " minions per minute"
+                    + "<br />Assuming you can farm 10 minions per minute you missed an average of " + round(missedPerMin) + " minions per minute"
                     + "<br />An ancient coin would have given you " + round(goldPerMin) + " extra gold per minute"
                     + "<br />With an average game duration of " + round(avDuration) + " minutes you missed " + goldMissed + " gold per game"
                     + "<br />Making a net gold difference of " + round(goldMissed - 365) + " gold per game</p>";
@@ -150,7 +150,7 @@ app.get("/:region/:summoner", function(req, res)
 
 function createError(err)
 {
-    return "<p><b>" + err.toString() + "</b></p>";
+    return "<h2>" + err.toString() + "</h2>";
 }
 
 app.listen(1337);
