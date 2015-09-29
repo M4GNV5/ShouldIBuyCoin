@@ -18,6 +18,7 @@ app.get("/doIt/:region/:summoner", function(req, res)
 {
     var region = req.params.region || "na";
     var summoner = req.params.summoner || false;
+    var startTime = new Date().getTime();
 
     if(regions.indexOf(region) == -1 || !summoner)
         return res.end(createError("invalid region"));
@@ -143,6 +144,8 @@ app.get("/doIt/:region/:summoner", function(req, res)
                 }
 
                 res.end(message);
+                var time = (new Date().getTime()) - startTime;
+                console.log("Finished user " + req.connection.remoteAddress + " in " + round(time / 1000) + " seconds");
             }
         });
     });
