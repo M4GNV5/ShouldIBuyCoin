@@ -9,7 +9,7 @@ var frontend = require("fs").readFileSync("./src/index.html");
 
 app.get("/", function(req, res)
 {
-    res.end(require("fs").readFileSync("./src/index.html"));
+    res.end(frontend);
 });
 
 app.use("/static", express.static(__dirname + "/static"));
