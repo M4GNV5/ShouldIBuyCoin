@@ -56,7 +56,7 @@
                     animatedOnce = true;
                     $("#result").html("<h2>Loading...</h2>");
 
-                    $.get("/" + region + "/" + name, function(data)
+                    $.get("/doIt/" + region + "/" + name, function(data)
                     {
                         if(data.split("<br />").length == 1) //error
                         {

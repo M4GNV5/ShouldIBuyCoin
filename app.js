@@ -14,7 +14,7 @@ app.get("/", function(req, res)
 
 app.use("/static", express.static(__dirname + "/static"));
 
-app.get("/:region/:summoner", function(req, res)
+app.get("/doIt/:region/:summoner", function(req, res)
 {
     var region = req.params.region || "na";
     var summoner = req.params.summoner || false;
